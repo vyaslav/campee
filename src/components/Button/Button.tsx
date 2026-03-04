@@ -34,7 +34,7 @@ export const Button = forwardRef<
     > & { "data-testid"?: string } = {
       className: classNames(
         className,
-        "border-pill default-style-none inline-flex items-center",
+        "border-pill default-style-none inline-flex items-center text-nowrap",
         "disabled:cursor-not-allowed disabled:border-gray-600 disabled:bg-gray-300 disabled:text-gray-600 disabled:hover:shadow-none",
         {
           "hover:shadow-pill": variant === "outline" || variant === "primary",
