@@ -1,5 +1,7 @@
 import classNames from "classnames";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { PiPencilSimpleBold } from "react-icons/pi";
 
 import { VotingRoomContext } from "../../context/VotingRoomContext";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
@@ -8,6 +10,7 @@ import { useVoteUpdateMutation } from "../../mutations/useVoteUpdateMutation";
 import type { Vote } from "../../types/voteValue";
 import { getVoteValues } from "../../utils/vote";
 import { BackfaceCard } from "../BackfaceCard/BackfaceCard";
+import { Button } from "../Button/Button";
 import { CardsInHand } from "../CardsInHand/CardsInHand";
 import { FrontfaceCard } from "../FrontfaceCard/FrontfaceCard";
 import { TreeDimensionCard } from "../TreeDimensionCard/TreeDimensionCard";
@@ -18,9 +21,12 @@ export const UserSeat = () => {
     useContext(VotingRoomContext);
 
   const { breakpointMinLg } = useBreakpoint();
+  const { t } = useTranslation();
   const { track } = useTracking();
 
   const { mutate: updateVote } = useVoteUpdateMutation();
+
+  const [editionMode, setEditionMode] = useState(false);
 
   const voteValues = useMemo(() => {
     if (!votingRoom) {
@@ -31,13 +37,20 @@ export const UserSeat = () => {
   }, [votingRoom]);
 
   const showCardsList = useMemo(
-    () => !isPending && !votingRoom?.votes_revealed && userParticipant,
-    [isPending, votingRoom?.votes_revealed, userParticipant],
+    () =>
+      !isPending &&
+      userParticipant &&
+      (!votingRoom?.votes_revealed || editionMode),
+    [isPending, votingRoom?.votes_revealed, userParticipant, editionMode],
   );
 
   const showRevealedCard = useMemo(
-    () => votingRoom?.votes_revealed && userParticipant,
-    [votingRoom?.votes_revealed, userParticipant],
+    () =>
+      !isPending &&
+      userParticipant &&
+      votingRoom?.votes_revealed &&
+      !editionMode,
+    [isPending, userParticipant, votingRoom?.votes_revealed, editionMode],
   );
 
   const handleCardClick = useCallback(
@@ -48,16 +61,23 @@ export const UserSeat = () => {
 
       const newVote = voteValue === userParticipant?.vote ? null : voteValue;
 
+      if (editionMode && newVote === null) {
+        setEditionMode(false);
+        return;
+      }
+
       updateVote({
         vote: newVote,
         votingRoomId: votingRoom.id,
       });
 
+      setEditionMode(false);
+
       if (newVote !== null) {
         track("vote");
       }
     },
-    [track, updateVote, userParticipant, votingRoom],
+    [editionMode, track, updateVote, userParticipant, votingRoom],
   );
 
   return (
@@ -72,20 +92,31 @@ export const UserSeat = () => {
             },
           )}
         >
-          <TreeDimensionCard
-            backfaceCard={
-              <BackfaceCard
-                backfaceCardStyleKey={
-                  userParticipantProfile?.backface_card_style_key ?? "cool"
-                }
-              />
-            }
-            className="h-full"
-            frontfaceCard={
-              <FrontfaceCard voteValue={userParticipant.vote as Vote} />
-            }
-            revealed={Boolean(votingRoom?.votes_revealed)}
-          />
+          <div className="relative h-full">
+            <TreeDimensionCard
+              backfaceCard={
+                <BackfaceCard
+                  backfaceCardStyleKey={
+                    userParticipantProfile?.backface_card_style_key ?? "cool"
+                  }
+                />
+              }
+              className="h-full"
+              frontfaceCard={
+                <FrontfaceCard voteValue={userParticipant.vote as Vote} />
+              }
+              revealed={Boolean(votingRoom?.votes_revealed)}
+            />
+            <Button
+              className="absolute top-1/2 -right-6 translate-x-full -translate-y-1/2"
+              leftIcon={PiPencilSimpleBold}
+              onClick={() => setEditionMode(true)}
+              size="sm"
+              tagElement="button"
+              title={t("components.user_seat.vote_edit_button_label")}
+              variant="outline"
+            />
+          </div>
         </div>
       )}
       <div

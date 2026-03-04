@@ -73,6 +73,9 @@
       "success_message": "Your information has been updated",
       "title": "My information"
     },
+    "user_seat": {
+      "vote_edit_button_label": "Change my vote"
+    },
     "user_voting_room_drawer": {
       "empty_state_description": "You haven't participated in any sessions yet.<br />Come back later.",
       "empty_state_title": "No sessions",

@@ -73,6 +73,9 @@
       "success_message": "Vos informations ont bien été modifiée",
       "title": "Mes informations"
     },
+    "user_seat": {
+      "vote_edit_button_label": "Modifier mon vote"
+    },
     "user_voting_room_drawer": {
       "empty_state_description": "Vous n'avez encore jamais participé à une session.<br />Revenez ici plus tard.",
       "empty_state_title": "Aucune session",
