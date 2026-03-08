@@ -33,7 +33,7 @@ export const Header = ({
       )}
     >
       <Link
-        className="default-style-none"
+        className="default-style-none flex items-center lg:min-h-11"
         title={t("common.navigation.back_to_front_page_button_label")}
         to="/"
       >
