@@ -18,7 +18,6 @@ import { useTablePath } from "./useTablePath";
 export const VotingRoomTable = ({
   className,
   onSeeQrCodeButtonClick,
-  style,
 }: VotingRoomTableProps) => {
   const { isPending, peerParticipants, votingRoom } =
     useContext(VotingRoomContext);
@@ -49,7 +48,6 @@ export const VotingRoomTable = ({
             "overflow-y-auto": !showParticipantsAsSeats,
           },
         )}
-        style={style}
       >
         {isPending ? (
           <div className="m-auto flex w-full justify-center">
