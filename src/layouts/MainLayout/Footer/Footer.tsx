@@ -57,7 +57,7 @@ export const Footer = () => {
         <hr className="border-lemon-50/10" />
         <div className="flex flex-col gap-6 py-6 xl:flex-row xl:gap-12 xl:py-12">
           <div className="flex grow flex-col items-center gap-6 xl:flex-row xl:gap-12">
-            <Logo reversed={!darkThemeEnabled} showBeta />
+            <Logo reversed={!darkThemeEnabled} />
             <MadeInEuropeLogo className="w-24 xl:w-28" />
             <nav>
               <ul className="flex items-center gap-6">

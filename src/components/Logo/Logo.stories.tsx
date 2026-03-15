@@ -22,12 +22,6 @@ export const IconOnly: Story = {
   },
 };
 
-export const ShowBeta: Story = {
-  args: {
-    showBeta: true,
-  },
-};
-
 export const Reversed: Story = {
   args: {
     reversed: true,

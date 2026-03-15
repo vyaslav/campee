@@ -37,7 +37,7 @@ export const Header = ({
         title={t("common.navigation.back_to_front_page_button_label")}
         to="/"
       >
-        <Logo showBeta />
+        <Logo />
       </Link>
       <Button
         className="lg:hidden"
